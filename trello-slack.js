@@ -67,7 +67,7 @@ function watch(){
 						      ,card_url = 'https://trello.com/card/' + card_id + '/' + board.id + '/' + card_id_short
 						      ,card_name = B.data.card.name
 							   ,author = B.memberCreator.fullName
-							   ,msg = ':godmode: ' + author + ' commented on card :pencil: <' + card_url + '|'
+							   ,msg = ':pencil2: ' + author + ' commented on card <' + card_url + '|'
 							    + card_name + '>: ' + trunc(B.data.text);
 							notify(board.slack_channel || cfg.slack.default_channel, msg);
 				   	}
@@ -81,7 +81,7 @@ function watch(){
 						      ,card_name = B.data.card.name
 							   ,author = B.memberCreator.fullName
 							   ,aurl = B.data.attachment.url;
-							var m = ':godmode: ' + author + ' added an attachment to card :pencil: <'
+							var m = ':floppy_disk: ' + author + ' added an attachment to card <'
 							      + card_url + '|' + card_name + '>: '
 							      + '<' + aurl + '|' + B.data.attachment.name + '>';
 							notify(board.slack_channel || cfg.slack.default_channel, m);
@@ -113,10 +113,10 @@ function watch(){
 									if (err) throw err;
 									nameN = resp.name;
 									if (board.lists.indexOf(nameO) > -1 || board.lists.indexOf(nameN) > -1){
-										var msg = ':godmode:' + author + ' moved card <'
+										var msg = ':arrow_heading_up:' + author + ' moved card <'
 										        + card_url + '|' + card_name + '> from list '
 										        + nameO + ' to list ' + nameN;
-										notify(board.hipchat_room, msg);
+										notify(board.slack_channel || cfg.slack.default_channel, msg);
 									}
 								});
 							});

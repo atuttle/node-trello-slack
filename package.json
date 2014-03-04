@@ -1,0 +1,29 @@
+{
+  "name": "node-trello-slack",
+  "version": "0.0.0",
+  "description": "Monitors a collection of Trello boards and pushes their activity into SlackHQ",
+  "main": "trello-slack.js",
+  "keywords": [
+    "trello",
+    "slack",
+    "slackhq",
+    "webhook",
+    "integration"
+  ],
+  "author": "Adam Tuttle",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/atuttle/node-trello-slack.git"
+  },
+  "bugs": {
+    "url": "https://github.com/atuttle/node-trello-slack/issues"
+  },
+  "homepage": "https://github.com/atuttle/node-trello-slack",
+  "dependencies": {
+    "node-trello": "^0.1.4",
+    "node-slack": "^0.0.3",
+    "redis": "^0.10.1",
+    "url": "^0.7.9"
+  }
+}

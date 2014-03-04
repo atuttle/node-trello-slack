@@ -60,7 +60,7 @@ function watch(){
 				if (A.type === "commentCard"){
 					// console.log(A.data.text);
 					// process.exit(1);
-				   card_in_lists(card_id, board.lists, A, function(doNotify, B){
+				   card_in_lists(A.data.card.id, board.lists, A, function(doNotify, B){
 				   	if (doNotify){
 							var card_id_short = B.data.card.idShort
 						      ,card_id = B.data.card.id
@@ -73,7 +73,7 @@ function watch(){
 				   	}
 				   });
 				}else if (A.type === 'addAttachmentToCard'){
-					card_in_lists(card_id, board.lists, A, function(doNotify, B){
+					card_in_lists(A.data.card.id, board.lists, A, function(doNotify, B){
 						if (doNotify){
 							var card_id_short = B.data.card.idShort
 						      ,card_id = B.data.card.id

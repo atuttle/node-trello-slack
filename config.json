@@ -1,27 +1,27 @@
 {
 	"trello": {
 		"auth": {
-			"key":"f55b5b84e72942db4170a7585404b2bc"
-			,"token":"6256f2a36e43476ce6e673ba215a84bd4675e74840a6b530c4542babf9bcb7cb"
+			"key":"your-trello-key-here"
+			,"token":"your-trello-token-here"
 		}
 		,"boards": [
 			{
-				"name":"UD AW / CURM Update"
-				,"id":"d5Qvqrj3"
+				"name":"Board display name here"
+				,"id":"id from trello url here"
 				,"lists": ["*"]
-				,"slack_channel": "#testing"
+				,"slack_channel": "#ops"
 			}
 			,{
-				"name":"CounterMarch 30k Foot View"
-				,"id":"M9qYAVan"
+				"name":"Board display name here"
+				,"id":"id from trello url here"
 				,"lists": ["*"]
-				,"slack_channel": "#testing"
+				,"slack_channel": "#ops"
 			}
 		]
 	}
 	,"slack": {
-		"domain":"countermarch"
-		,"token": "NZwAZpvQzXWtHuC8s1mkKK2H"
+		"domain":"your-slack-domain-here"
+		,"token": "your-slack-token-here"
 		,"default_channel": "#ops"
 	}
 }

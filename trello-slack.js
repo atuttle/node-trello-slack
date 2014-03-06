@@ -67,7 +67,7 @@ function watch(){
 						      ,card_url = 'https://trello.com/card/' + card_id + '/' + board.id + '/' + card_id_short
 						      ,card_name = B.data.card.name
 							   ,author = B.memberCreator.fullName
-							   ,msg = ':pencil2: ' + author + ' commented on card <' + card_url + '|'
+							   ,msg = ':speech_balloon: ' + author + ' commented on card <' + card_url + '|'
 							    + card_name + '>: ' + trunc(B.data.text);
 							notify(board.slack_channel || cfg.slack.default_channel, msg);
 				   	}
@@ -81,7 +81,7 @@ function watch(){
 						      ,card_name = B.data.card.name
 							   ,author = B.memberCreator.fullName
 							   ,aurl = B.data.attachment.url;
-							var m = ':floppy_disk: ' + author + ' added an attachment to card <'
+							var m = ':paperclip: ' + author + ' added an attachment to card <'
 							      + card_url + '|' + card_name + '>: '
 							      + '<' + aurl + '|' + B.data.attachment.name + '>';
 							notify(board.slack_channel || cfg.slack.default_channel, m);
@@ -155,7 +155,6 @@ function notify(room, msg, sender){
 		text: msg
 		,channel: room
 		,username: sender
-		,icon_url: "http://i.imgur.com/kYkDBjH.png"
 	}, function(err, resp){
 		if (err){
 			console.error('ERROR:\n', err);

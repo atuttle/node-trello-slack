@@ -155,6 +155,7 @@ function notify(room, msg, sender){
 		text: msg
 		,channel: room
 		,username: sender
+		,icon_url: 'https://slack.global.ssl.fastly.net/10562/img/services/trello_48.png'
 	}, function(err, resp){
 		if (err){
 			console.error('ERROR:\n', err);

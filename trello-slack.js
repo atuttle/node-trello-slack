@@ -86,7 +86,7 @@ handlers = {
 			      ,card_name = A.data.card.name
 				   ,author = A.memberCreator.fullName
 				   ,msg = ':speech_balloon: ' + author + ' commented on card <' + card_url + '|'
-				    + card_name + '>: ' + trunc(A.data.text);
+				    + sanitize(card_name) + '>: ' + trunc(A.data.text);
 				notify(board.slack_channel || cfg.slack.default_channel, msg);
 	   	}
 	   });
@@ -101,15 +101,9 @@ handlers = {
 				   ,author = A.memberCreator.fullName
 				   ,aurl = A.data.attachment.url;
 				var m = ':paperclip: ' + author + ' added an attachment to card <'
-				      + card_url + '|' + card_name + '>: '
-				      + '<' + aurl + '|' + A.data.attachment.name + '>';
+				      + card_url + '|' + sanitize(card_name) + '>: '
+				      + '<' + aurl + '|' + sanitize(A.data.attachment.name) + '>';
 				notify(board.slack_channel || cfg.slack.default_channel, m);
-				if (aurl){
-					var aurllower = aurl.toLowerCase();
-					if (aurllower.match(/.+(\.png|\.gif|\.jpg|\.jpeg)$/)){
-						notify(board.slack_channel || cfg.slack.default_channel, aurl);
-					}
-				}
 			}
 		});
 	}
@@ -133,7 +127,7 @@ handlers = {
 					nameN = resp.name;
 					if (board.lists.indexOf(nameO) > -1 || board.lists.indexOf(nameN) > -1){
 						var msg = ':arrow_heading_up:' + author + ' moved card <'
-						        + card_url + '|' + card_name + '> from list '
+						        + card_url + '|' + sanitize(card_name) + '> from list '
 						        + nameO + ' to list ' + nameN;
 						notify(board.slack_channel || cfg.slack.default_channel, msg);
 					}
@@ -152,7 +146,7 @@ handlers = {
 				   ;
 				if (A.data.checkItem.state === 'complete'){
 					var msg = ':ballot_box_with_check: ' + author + ' completed "'
-					+ A.data.checkItem.name + '" in card <' + card_url + '|' + card_name + '>.';
+					+ A.data.checkItem.name + '" in card <' + card_url + '|' + sanitize(card_name) + '>.';
 					notify(board.slack_channel || cfg.slack.default_channel, msg);
 				}
 			}
@@ -188,8 +182,13 @@ function card_in_lists(card_id, lists, callback){
 		callback(found);
 	});
 }
-function encapsulate(A,cb){
-	return cb(A);
+function sanitize(msg){
+	return msg.replace(/([><])/g, function(match, patt, offset, string){
+		return (
+			patt === '>' ? '&gt;' :
+			patt === '<' ? '&lt;' : ''
+		);
+	});
 }
 function trunc(s){
 	s = s || '';

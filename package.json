@@ -24,6 +24,6 @@
     "node-slack": "^0.0.3",
     "redis": "^0.10.1",
     "url": "^0.7.9",
-    "trello-events": "^0.1.5"
+    "trello-events": "^0.1.6"
   }
 }

@@ -18,6 +18,7 @@ Create an executable script with the following code:
 var Bot = require('node-trello-slack')
 	,bot = new Bot({
 		pollFrequency: 1000*60*3 //every 3 minutes
+		,start: true
 		,trello: {
 			boards: ['Nz5nyqZg','...']
 			,key: 'trello-key-here'
@@ -29,6 +30,27 @@ var Bot = require('node-trello-slack')
 			,channel: '#general'
 		}
 	});
+```
+
+### Trello-board-specific channels
+
+If you want to send alerts from each board to a different Slack channel, pass object hashes instead of string board id's in the `trello.boards` array, as you see here:
+
+```js
+,trello: {
+	boards: [
+		{
+			id: 'Nz5nyqZg'
+			,channel: '#general'
+		}
+		,{
+			id: '...'
+			,channel: '#devops'
+		}
+	]
+	,key: 'trello-key-here'
+	,token: 'trello-token-here'
+}
 ```
 
 ## Getting your Trello and Slack credentials

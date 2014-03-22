@@ -6,7 +6,21 @@ var cfg, trello, slack, redis, prevId, handlers;
 var mechanism = 'file';
 
 module.exports = function(config){
-	cfg = config;
+	this.config = cfg = config;
+
+	cfg.trello.boardChannels = {};
+	for (var i = 0; i < cfg.trello.boards.length; i++){
+		switch(typeof cfg.trello.boards[i]){
+			case "string":
+				cfg.trello.boardChannels[cfg.trello.boards[i]] = cfg.slack.channel;
+				break;
+			case "object":
+				cfg.trello.boardChannels[cfg.trello.boards[i].id] = cfg.trello.boards[i].channel;
+				break;
+			default:
+				throw "Unexpected boards array member type (" + typeof cfg.trello.boards[i] + ")";
+		}
+	}
 
 	bootstrap(function(prev){
 		cfg.minId = prev;
@@ -24,8 +38,11 @@ module.exports = function(config){
 			.on('updateCard', handlers.updateCard)
 			.on('updateCheckItemStateOnCard', handlers.updateCheckItemStateOnCard)
 	});
-}
+};
 
+module.exports.prototype.getConfig = function(){
+	return this.config;
+};
 
 /*
 	handles the choice between redis and local files
@@ -64,7 +81,7 @@ handlers = {
 			,author = event.memberCreator.fullName
 			,msg = ':speech_balloon: ' + author + ' commented on card <' + card_url + '|'
 				  + sanitize(card_name) + '>: ' + trunc(event.data.text);
-		notify(cfg.slack.channel, msg);
+		notify(cfg.trello.boardChannels[boardId], msg);
 	}
 	,addAttachmentToCard: function(event, boardId){
 		var card_id_short = event.data.card.idShort
@@ -76,7 +93,7 @@ handlers = {
 		var msg = ':paperclip: ' + author + ' added an attachment to card <'
 			   + card_url + '|' + sanitize(card_name) + '>: '
 			   + '<' + aurl + '|' + sanitize(event.data.attachment.name) + '>';
-		notify(cfg.slack.channel, msg);
+		notify(cfg.trello.boardChannels[boardId], msg);
 	}
 	,updateCard: function(event, boardId){
 		if (event.data.old.hasOwnProperty('idList') && event.data.card.hasOwnProperty('idList')){
@@ -98,7 +115,7 @@ handlers = {
 					var msg = ':arrow_heading_up:' + author + ' moved card <'
 					        + card_url + '|' + sanitize(card_name) + '> from list '
 					        + nameO + ' to list ' + nameN;
-					notify(cfg.slack.channel, msg);
+					notify(cfg.trello.boardChannels[boardId], msg);
 				});
 			});
 		}
@@ -112,7 +129,7 @@ handlers = {
 		if (event.data.checkItem.state === 'complete'){
 			var msg = ':ballot_box_with_check: ' + author + ' completed "'
 					  + event.data.checkItem.name + '" in card <' + card_url + '|' + sanitize(card_name) + '>.';
-			notify(cfg.slack.channel, msg);
+			notify(cfg.trello.boardChannels[boardId], msg);
 		}
 	}
 };

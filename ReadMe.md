@@ -15,7 +15,7 @@ Create an executable script with the following code:
 ```js
 #!/usr/bin/env node
 
-var Bot = require('./trello-slack')
+var Bot = require('node-trello-slack')
 	,bot = new Bot({
 		pollFrequency: 1000*60*3 //every 3 minutes
 		,trello: {

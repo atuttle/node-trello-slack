@@ -16,6 +16,7 @@ module.exports = function(config){
 				break;
 			case "object":
 				cfg.trello.boardChannels[cfg.trello.boards[i].id] = cfg.trello.boards[i].channel;
+				cfg.trello.boards[i] = cfg.trello.boards[i].id;
 				break;
 			default:
 				throw "Unexpected boards array member type (" + typeof cfg.trello.boards[i] + ")";

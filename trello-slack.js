@@ -141,6 +141,7 @@ function notify(room, msg, sender){
 		text: msg
 		,channel: room
 		,username: sender
+		,icon_url: 'http://i.imgur.com/HJLfIU6.png'
 	}, function(err, resp){
 		if (err){
 			throw err;

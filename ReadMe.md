@@ -1,3 +1,5 @@
+[![wercker status](https://app.wercker.com/status/eb0b999ab49d6313e243151fb6cea2ef/s "wercker status")](https://app.wercker.com/project/bykey/eb0b999ab49d6313e243151fb6cea2ef)
+
 # node-trello-slack
 
 The built-in integration for Trello provided by Slack/SlackHQ isn't enough. It's limited to one board!

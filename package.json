@@ -3,6 +3,9 @@
   "version": "0.3.2",
   "description": "Monitors a collection of Trello boards and pushes their activity into SlackHQ",
   "main": "trello-slack.js",
+  "scripts": {
+    "test": "mocha test/*.js"
+  },
   "keywords": [
     "trello",
     "slack",

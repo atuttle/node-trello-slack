@@ -61,7 +61,9 @@ You'll need a **Trello key and token.** [Get your key here](https://trello.com/1
 
     https://trello.com/1/connect?name=node-trello-slack&response_type=token&expiration=never&key=<KEY-HERE>
 
-You'll also need your webhook **token and domain** for Slack. The domain is just the part of the url before `.slack.com`. To get your token, go to the following url (substituting your domain for <YOUR-DOMAIN>) and add the webhook integration (if it's not already enabled). The token will be listed in the left sidebar.
+You'll also need your webhook **token and domain** for Slack. The domain is just the part of the url before `.slack.com`. To get your token, go to the following url (substituting your domain for `<YOUR-DOMAIN>`) and add the webhook integration (if it's not already enabled). The token will be listed in the left sidebar.
+
+    https://<YOUR-DOMAIN>.slack.com/services/new/incoming-webhook
 
 Fill all four of these values into your bot config, and tweak the other options
 

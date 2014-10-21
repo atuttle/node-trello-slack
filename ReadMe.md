@@ -1,6 +1,7 @@
 # node-trello-slack
 
 [![wercker status](https://app.wercker.com/status/c5b1d402d7139b17ed6b34ce74a29b3e/s/master "wercker status")](https://app.wercker.com/project/bykey/c5b1d402d7139b17ed6b34ce74a29b3e)
+<br/>[![Dependency Status](https://david-dm.org/atuttle/node-trello-slack.svg?style=flat)](https://david-dm.org/atuttle/node-trello-slack)
 
 The built-in integration for Trello provided by Slack/SlackHQ isn't enough. It's limited to one board!
 

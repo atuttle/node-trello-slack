@@ -1,6 +1,6 @@
 {
   "name": "node-trello-slack",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "Monitors a collection of Trello boards and pushes their activity into SlackHQ",
   "main": "trello-slack.js",
   "scripts": {

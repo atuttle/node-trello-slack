@@ -34,6 +34,7 @@ module.exports = function(config){
 				console.error(err);
 				process.exit(1);
 			})
+			.on('createCard', handlers.createCard)
 			.on('commentCard', handlers.commentCard)
 			.on('addAttachmentToCard', handlers.addAttachmentToCard)
 			.on('updateCard', handlers.updateCard)
@@ -74,7 +75,19 @@ function bootstrap(callback){
 }
 
 handlers = {
-	commentCard: function(event, boardId){
+	createCard: function(event, boardId){
+		var card_name = event.data.card.name
+			,card_id = event.data.card.id
+			,card_id_short = event.data.card.idShort
+			,card_url = 'https://trello.com/card/' + card_id + '/' + boardId + '/' + card_id_short
+			,author = event.memberCreator.fullName
+			,board_url = 'https://trello.com/b/' + boardId
+			,board_name = event.data.board.name
+			,msg = ':boom: ' + author + ' created card <' + card_url + '|'
+			     + sanitize(card_name) + '> on board <' + board_url + '|' + board_name + '>';
+		notify(cfg.trello.boardChannels[boardId], msg);
+	}
+	,commentCard: function(event, boardId){
 		var card_id_short = event.data.card.idShort
 			,card_id = event.data.card.id
 			,card_url = 'https://trello.com/card/' + card_id + '/' + boardId + '/' + card_id_short

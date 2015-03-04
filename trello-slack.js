@@ -1,8 +1,10 @@
+'use strict';
+
 var fs = require('fs')
    ,Trello = require('trello-events')
    ,Slack = require('node-slack');
 
-var cfg, trello, slack, redis, prevId, handlers;
+var cfg, trello, slack, redis, handlers;
 var mechanism = 'file';
 
 module.exports = function(config){
@@ -11,15 +13,15 @@ module.exports = function(config){
 	cfg.trello.boardChannels = {};
 	for (var i = 0; i < cfg.trello.boards.length; i++){
 		switch(typeof cfg.trello.boards[i]){
-			case "string":
+			case 'string':
 				cfg.trello.boardChannels[cfg.trello.boards[i]] = cfg.slack.channel;
 				break;
-			case "object":
+			case 'object':
 				cfg.trello.boardChannels[cfg.trello.boards[i].id] = cfg.trello.boards[i].channel;
 				cfg.trello.boards[i] = cfg.trello.boards[i].id;
 				break;
 			default:
-				throw "Unexpected boards array member type (" + typeof cfg.trello.boards[i] + ")";
+				throw 'Unexpected boards array member type (' + typeof cfg.trello.boards[i] + ')';
 		}
 	}
 
@@ -57,13 +59,13 @@ function bootstrap(callback){
 		//redis!
 		mechanism = 'redis';
 		if (process.env.REDISTOGO_URL) {
-			var rtg   = require("url").parse(process.env.REDISTOGO_URL);
-			redis = require("redis").createClient(rtg.port, rtg.hostname);
-			redis.auth(rtg.auth.split(":")[1]);
+			var rtg   = require('url').parse(process.env.REDISTOGO_URL);
+			redis = require('redis').createClient(rtg.port, rtg.hostname);
+			redis.auth(rtg.auth.split(':')[1]);
 		} else {
-			redis = require("redis").createClient();
+			redis = require('redis').createClient();
 		}
-		redis.get("prevId", function(err, reply){
+		redis.get('prevId', function(err, reply){
 			if (err){
 				console.error(err);
 				process.exit(1);
@@ -83,8 +85,7 @@ handlers = {
 			,author = event.memberCreator.fullName
 			,board_url = 'https://trello.com/b/' + boardId
 			,board_name = event.data.board.name
-			,msg = ':boom: ' + author + ' created card <' + card_url + '|'
-			     + sanitize(card_name) + '> on board <' + board_url + '|' + board_name + '>';
+			,msg = ':boom: ' + author + ' created card <' + card_url + '|' + sanitize(card_name) + '> on board <' + board_url + '|' + board_name + '>';
 		notify(cfg.trello.boardChannels[boardId], msg);
 	}
 	,commentCard: function(event, boardId){
@@ -93,8 +94,7 @@ handlers = {
 			,card_url = 'https://trello.com/card/' + card_id + '/' + boardId + '/' + card_id_short
 			,card_name = event.data.card.name
 			,author = event.memberCreator.fullName
-			,msg = ':speech_balloon: ' + author + ' commented on card <' + card_url + '|'
-				  + sanitize(card_name) + '>: ' + trunc(event.data.text);
+			,msg = ':speech_balloon: ' + author + ' commented on card <' + card_url + '|' + sanitize(card_name) + '>: ' + trunc(event.data.text);
 		notify(cfg.trello.boardChannels[boardId], msg);
 	}
 	,addAttachmentToCard: function(event, boardId){
@@ -104,9 +104,7 @@ handlers = {
 			,card_name = event.data.card.name
 			,author = event.memberCreator.fullName
 			,aurl = event.data.attachment.url;
-		var msg = ':paperclip: ' + author + ' added an attachment to card <'
-			   + card_url + '|' + sanitize(card_name) + '>: '
-			   + '<' + aurl + '|' + sanitize(event.data.attachment.name) + '>';
+		var msg = ':paperclip: ' + author + ' added an attachment to card <' + card_url + '|' + sanitize(card_name) + '>: ' + '<' + aurl + '|' + sanitize(event.data.attachment.name) + '>';
 		notify(cfg.trello.boardChannels[boardId], msg);
 	}
 	,updateCard: function(event, boardId){
@@ -126,9 +124,7 @@ handlers = {
 				trello.api.get('/1/list/' + newId, function(err, resp){
 					if (err) throw err;
 					nameN = resp.name;
-					var msg = ':arrow_heading_up:' + author + ' moved card <'
-					        + card_url + '|' + sanitize(card_name) + '> from list '
-					        + nameO + ' to list ' + nameN;
+					var msg = ':arrow_heading_up:' + author + ' moved card <' + card_url + '|' + sanitize(card_name) + '> from list ' + nameO + ' to list ' + nameN;
 					notify(cfg.trello.boardChannels[boardId], msg);
 				});
 			});
@@ -141,8 +137,7 @@ handlers = {
 			,card_name = event.data.card.name
 			,author = event.memberCreator.fullName;
 		if (event.data.checkItem.state === 'complete'){
-			var msg = ':ballot_box_with_check: ' + author + ' completed "'
-					  + event.data.checkItem.name + '" in card <' + card_url + '|' + sanitize(card_name) + '>.';
+			var msg = ':ballot_box_with_check: ' + author + ' completed "' + event.data.checkItem.name + '" in card <' + card_url + '|' + sanitize(card_name) + '>.';
 			notify(cfg.trello.boardChannels[boardId], msg);
 		}
 	}
@@ -155,15 +150,15 @@ function notify(room, msg, sender){
 		,channel: room
 		,username: sender
 		,icon_url: 'http://i.imgur.com/HJLfIU6.png'
-	}, function(err, resp){
+	}, function(err){
 		if (err){
-			throw err;
 			console.error('ERROR:\n', err);
+			throw err;
 		}
 	});
 }
 function sanitize(msg){
-	return msg.replace(/([><])/g, function(match, patt, offset, string){
+	return msg.replace(/([><])/g, function(match, patt){
 		return (
 			patt === '>' ? '&gt;' :
 			patt === '<' ? '&lt;' : ''
@@ -180,7 +175,7 @@ function writePrevId(valu){
 	if (mechanism === 'file'){
 		fs.writeFileSync('./last.id', valu);
 	}else{
-		redis.set('prevId', valu, function(err, reply){
+		redis.set('prevId', valu, function(err){
 			if (err){
 				console.error('Error setting new value to redis\n-----------------------------');
 				console.error(err);

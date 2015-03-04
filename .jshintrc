@@ -1,0 +1,11 @@
+{
+  "node": true
+  ,"esnext": false
+  ,"globals": [ "require", "module", "console" ]
+  ,"quotmark": "single"
+  ,"undef": true
+  ,"unused": true
+  ,"laxcomma": true
+  ,"bitwise": true
+  ,"eqeqeq": true
+}

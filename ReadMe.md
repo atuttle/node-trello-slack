@@ -26,6 +26,7 @@ var Bot = require('node-trello-slack')
 			boards: ['Nz5nyqZg','...']
 			,key: 'trello-key-here'
 			,token: 'trello-token-here'
+			,events: ['createCard','commentCard','addAttachmentToCard','updateCard','updateCheckItemStateOnCard']
 		}
 		,slack: {
 			domain: 'slack-domain-here'
@@ -34,6 +35,8 @@ var Bot = require('node-trello-slack')
 		}
 	});
 ```
+
+You may completely omit `trello.events`, which indicates that you want all (recognized) events announced. All recognized events are listed in the example above. Alternately, include some subset of the list shown above. (Case sensitive)
 
 ### Trello-board-specific channels
 

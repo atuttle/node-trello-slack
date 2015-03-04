@@ -25,6 +25,18 @@ module.exports = function(config){
 		}
 	}
 
+	var allEvents = false;
+	if (!cfg.trello.hasOwnProperty('events')){
+		allEvents = true;
+	}
+
+	function wantsEvent( evt ){
+		if (!cfg.trello.hasOwnProperty('events')){
+			return false;
+		}
+		return cfg.trello.events.indexOf( evt ) > -1;
+	}
+
 	bootstrap(function(prev){
 		cfg.minId = prev;
 		slack = new Slack(cfg.slack.domain, cfg.slack.token);
@@ -35,12 +47,23 @@ module.exports = function(config){
 			.on('trelloError', function(err){
 				console.error(err);
 				process.exit(1);
-			})
-			.on('createCard', handlers.createCard)
-			.on('commentCard', handlers.commentCard)
-			.on('addAttachmentToCard', handlers.addAttachmentToCard)
-			.on('updateCard', handlers.updateCard)
-			.on('updateCheckItemStateOnCard', handlers.updateCheckItemStateOnCard)
+			});
+
+		if ( wantsEvent('createCard') || allEvents ){
+			trello.on('createCard', handlers.createCard);
+		}
+		if ( wantsEvent('commentCard') || allEvents ){
+			trello.on('commentCard', handlers.commentCard);
+		}
+		if ( wantsEvent('addAttachmentToCard') || allEvents ){
+			trello.on('addAttachmentToCard', handlers.addAttachmentToCard);
+		}
+		if ( wantsEvent('updateCard') || allEvents ){
+			trello.on('updateCard', handlers.updateCard);
+		}
+		if ( wantsEvent('updateCheckItemStateOnCard') || allEvents ){
+			trello.on('updateCheckItemStateOnCard', handlers.updateCheckItemStateOnCard);
+		}
 	});
 };
 
